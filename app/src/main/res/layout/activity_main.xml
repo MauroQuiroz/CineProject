@@ -47,18 +47,20 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/btnNavegation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
+        android:layout_height="62dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/bottom_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="29dp"
-        app:itemPaddingBottom="5dp"
+        app:itemPaddingBottom="10dp"
+
         style="@style/NoAnimationBottomNavigationView"
         app:itemTextColor="@color/menu_hover"
         app:itemIconTint="@color/menu_hover"
+        android:background="@color/white"
+
       />
 }
 

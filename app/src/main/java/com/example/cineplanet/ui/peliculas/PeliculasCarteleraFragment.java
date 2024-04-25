@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -87,7 +88,7 @@ public class PeliculasCarteleraFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-       service.getAll().enqueue(new Callback<List<Movies>>() {
+       service.getAll("cartelera").enqueue(new Callback<List<Movies>>() {
             @Override
             public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
                 if (response.code() == 200) {
@@ -105,7 +106,12 @@ public class PeliculasCarteleraFragment extends Fragment {
             recyclerView = bilding.carteleraRecycler;
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
             adapter  = new PeliculasAdapter(movies);
+
+            GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 2); // 2 columnas
+            recyclerView.setLayoutManager(layoutManager);
+
             recyclerView.setAdapter(adapter);
+
 
     }
     @Override
