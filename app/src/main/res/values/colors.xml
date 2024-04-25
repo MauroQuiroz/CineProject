@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="menu_hover">#0D1F40</color>
+    <color name="color_text">#003F89</color>
+    <color name="color_icons">#003F89</color>
+    <color name="color_borde_inferior">#A9A7A5</color>
+    <color name="color_background_car_estre_fes">#F7F7F7</color>
+    <color name="color_secundario">#E70844</color>
+</resources>
