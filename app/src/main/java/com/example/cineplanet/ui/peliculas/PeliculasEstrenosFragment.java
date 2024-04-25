@@ -2,13 +2,31 @@ package com.example.cineplanet.ui.peliculas;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineplanet.R;
+import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
+import com.example.cineplanet.databinding.FragmentPeliculasEstrenosBinding;
+import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
+import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
+import com.example.cineplanet.ui.peliculas.services.Movies;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,20 +43,18 @@ public class PeliculasEstrenosFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+//// vallllllllllllll
+    FragmentPeliculasEstrenosBinding bilding;
+    private Retrofit retrofit;
+    IPeliculaShow service;
+    List<Movies> movies;
+    RecyclerView.Adapter adapter;
+    RecyclerView recyclerView;
     public PeliculasEstrenosFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PeliculasEstrenosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static PeliculasEstrenosFragment newInstance(String param1, String param2) {
         PeliculasEstrenosFragment fragment = new PeliculasEstrenosFragment();
         Bundle args = new Bundle();
@@ -60,7 +76,53 @@ public class PeliculasEstrenosFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_peliculas_estrenos, container, false);
+        bilding  = FragmentPeliculasEstrenosBinding.inflate(inflater,container,false);
+        return bilding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ///AWQUIII
+        // Instanciar Retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://661d2649e7b95ad7fa6c4c14.mockapi.io/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Instanciar IContactService
+        service = retrofit.create(IPeliculaShow.class);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        service.getAll("estrenos").enqueue(new Callback<List<Movies>>() {
+            @Override
+            public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
+                if (response.code() == 200) {
+                    movies = response.body();
+                    createMovies();
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Movies>> call, Throwable t) {
+
+            }
+        });
+    }
+    public void createMovies(){
+
+        recyclerView = bilding.carteleraRecycler;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
+        adapter  = new PeliculasAdapter(movies);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 2); // 2 columnas
+        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setAdapter(adapter);
+
+
     }
 }

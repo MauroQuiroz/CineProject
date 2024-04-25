@@ -45,6 +45,12 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculasAdapter.View
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         holder.txt.setText(items.get(position).getStatus());
         Picasso.get().load(items.get(position).getSrc()).into(holder.image);
+
+
+        //Event CLick
+
+
+
     }
 
     @Override
