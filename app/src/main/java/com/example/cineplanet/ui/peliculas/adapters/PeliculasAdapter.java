@@ -1,6 +1,7 @@
 package com.example.cineplanet.ui.peliculas.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.example.cineplanet.domain.PeliculaDomain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.cineplanet.ui.peliculas.PeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.Movies;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +50,15 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculasAdapter.View
 
 
         //Event CLick
+        holder.image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PeliculaShow.class);
+                intent.putExtra("idPelicula",items.get(position).getId());
+                context.startActivity(intent);
 
+            }
+        });
 
 
     }
