@@ -12,11 +12,14 @@ import com.example.cineplanet.ui.peliculas.PeliculasComprarFragment;
 import com.example.cineplanet.ui.peliculas.PeliculasDetalleFragment;
 import com.example.cineplanet.ui.peliculas.PeliculasEstrenosFragment;
 import com.example.cineplanet.ui.peliculas.PeliculasFestivalFragment;
+import com.example.cineplanet.ui.peliculas.services.Movie;
 
 public class ViewDetallePeliculasAdapter extends FragmentStateAdapter {
+    Movie movie;
 
-    public ViewDetallePeliculasAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public ViewDetallePeliculasAdapter(@NonNull FragmentActivity fragmentActivity, Movie data) {
         super(fragmentActivity);
+        movie = data;
     }
 
     public ViewDetallePeliculasAdapter(@NonNull Fragment fragment) {
@@ -31,12 +34,12 @@ public class ViewDetallePeliculasAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if(position==0){
-            return new PeliculasDetalleFragment();
+            return new PeliculasDetalleFragment(movie);
         }
         if(position==1){
             return new PeliculasComprarFragment();
         }
-        return new PeliculasDetalleFragment();
+        return new PeliculasDetalleFragment(movie);
     }
 
     @Override

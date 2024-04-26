@@ -8,4 +8,6 @@
     <color name="color_borde_inferior">#A9A7A5</color>
     <color name="color_background_car_estre_fes">#F6F6F6</color>
     <color name="color_secundario">#E70844</color>
+
+    <color name="color_text_secundario">#68696D</color>
 </resources>

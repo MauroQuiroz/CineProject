@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.example.cineplanet.ui.peliculas.PeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.Movies;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 public class PeliculasAdapter extends RecyclerView.Adapter<PeliculasAdapter.Viewholder> {
@@ -54,6 +55,7 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculasAdapter.View
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PeliculaShow.class);
+
                 intent.putExtra("idPelicula",items.get(position).getId());
                 context.startActivity(intent);
 
