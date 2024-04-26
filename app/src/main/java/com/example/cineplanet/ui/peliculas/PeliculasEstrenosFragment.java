@@ -84,8 +84,7 @@ public class PeliculasEstrenosFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ///AWQUIII
-        // Instanciar Retrofit
+        ///
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://661d2649e7b95ad7fa6c4c14.mockapi.io/")
                 .addConverterFactory(GsonConverterFactory.create())
