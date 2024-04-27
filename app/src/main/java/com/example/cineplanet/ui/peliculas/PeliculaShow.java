@@ -1,8 +1,10 @@
 package com.example.cineplanet.ui.peliculas;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import com.example.cineplanet.ui.peliculas.services.Movie;
 import com.example.cineplanet.ui.peliculas.services.Movies;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -94,10 +97,22 @@ public class PeliculaShow extends AppCompatActivity {
 
         binding.peliculaTitle.setText(movie.getName());
         binding.generoHoraEdad.setText(movie.getGender()+" | "+movie.getDuration()+" | "+movie.getAge());
+        Picasso.get().load(movie.getUrlmini()).into(binding.imageMini);
 
         ///FrAGMNET
         viewPeliculasAdpater = new  ViewDetallePeliculasAdapter(this,movie);
         binding.fragmentContainerPeliculasDetail.setAdapter(viewPeliculasAdpater);
+
+        binding.imageMini.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String videoUrl = movie.getUrl(); // Reemplaza VIDEO_ID con el ID del video
+
+                // Abrir el enlace en la aplicación de YouTube
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+                startActivity(intent);
+            }
+        });
 
         //
 

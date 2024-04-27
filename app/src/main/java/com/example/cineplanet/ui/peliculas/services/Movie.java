@@ -11,7 +11,10 @@ public class Movie {
     String[] avaliable;
     int id;
 
-    public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id) {
+    String urlmini;
+    String url;
+
+    public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id, String urlmini, String url) {
         this.name = name;
         this.gender = gender;
         this.duration = duration;
@@ -21,6 +24,8 @@ public class Movie {
         this.language = language;
         this.avaliable = avaliable;
         this.id = id;
+        this.urlmini = urlmini;
+        this.url = url;
     }
 
     public String getName() {
@@ -93,5 +98,21 @@ public class Movie {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUrlmini() {
+        return urlmini;
+    }
+
+    public void setUrlmini(String urlmini) {
+        this.urlmini = urlmini;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
