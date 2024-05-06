@@ -104,6 +104,7 @@ public class PeliculasCarteleraFragment extends Fragment {
         });
     }
     public void createMovies(){
+
             recyclerView = bilding.carteleraRecycler;
             recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
             adapter  = new PeliculasAdapter(movies);

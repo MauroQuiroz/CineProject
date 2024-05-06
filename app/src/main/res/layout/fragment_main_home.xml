@@ -3,89 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.MainHomeFragment">
-    <ScrollView
+    tools:context=".ui.home.MainHomeFragment"
+    android:background="@color/white">
+   
+    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+        android:id="@+id/carrucel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundo"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="hola mundodddddd"/>
-
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="match_parent"/>
 
 
 
