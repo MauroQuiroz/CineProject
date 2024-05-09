@@ -1,5 +1,7 @@
 package com.example.cineplanet.ui.peliculas.services;
 
+import java.util.List;
+
 public class Movie {
     String name;
     String gender;
@@ -14,7 +16,10 @@ public class Movie {
     String urlmini;
     String url;
 
-    public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id, String urlmini, String url) {
+    String[] idsCinemas;
+    String[][] hoursCinemas;
+
+    public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id, String urlmini, String url, String[] idsCinemas, String[][] hoursCinemas) {
         this.name = name;
         this.gender = gender;
         this.duration = duration;
@@ -26,6 +31,8 @@ public class Movie {
         this.id = id;
         this.urlmini = urlmini;
         this.url = url;
+        this.idsCinemas = idsCinemas;
+        this.hoursCinemas = hoursCinemas;
     }
 
     public String getName() {
@@ -114,5 +121,21 @@ public class Movie {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String[] getIdsCinemas() {
+        return idsCinemas;
+    }
+
+    public void setIdsCinemas(String[] idsCinemas) {
+        this.idsCinemas = idsCinemas;
+    }
+
+    public String[][] getHoursCinemas() {
+        return hoursCinemas;
+    }
+
+    public void setHoursCinemas(String[][] hoursCinemas) {
+        this.hoursCinemas = hoursCinemas;
     }
 }

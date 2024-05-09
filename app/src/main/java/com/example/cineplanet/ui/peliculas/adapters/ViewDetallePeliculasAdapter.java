@@ -37,7 +37,7 @@ public class ViewDetallePeliculasAdapter extends FragmentStateAdapter {
             return new PeliculasDetalleFragment(movie);
         }
         if(position==1){
-            return new PeliculasComprarFragment();
+            return new PeliculasComprarFragment(movie);
         }
         return new PeliculasDetalleFragment(movie);
     }

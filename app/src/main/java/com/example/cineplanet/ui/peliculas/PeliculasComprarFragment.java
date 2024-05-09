@@ -2,13 +2,37 @@ package com.example.cineplanet.ui.peliculas;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cineplanet.R;
+import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
+import com.example.cineplanet.databinding.FragmentPeliculasComprarBinding;
+import com.example.cineplanet.ui.peliculas.adapters.CineAdapterPelicula;
+import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
+import com.example.cineplanet.ui.peliculas.entities.ICinePelicula;
+import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
+import com.example.cineplanet.ui.peliculas.services.CinePelicula;
+import com.example.cineplanet.ui.peliculas.services.Movie;
+import com.example.cineplanet.ui.peliculas.services.Movies;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,8 +50,21 @@ public class PeliculasComprarFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PeliculasComprarFragment() {
+    FragmentPeliculasComprarBinding bilding;
+    private Retrofit retrofit;
+
+    ICinePelicula service;
+
+    RecyclerView.Adapter adapter;
+    RecyclerView recyclerView;
+    Movie  movie;
+    List<CinePelicula> cinePeliculas  =new ArrayList<>();
+
+
+    public PeliculasComprarFragment(Movie movie) {
         // Required empty public constructor
+        this.movie = movie;
+
     }
 
     /**
@@ -39,14 +76,40 @@ public class PeliculasComprarFragment extends Fragment {
      * @return A new instance of fragment PeliculasComprarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PeliculasComprarFragment newInstance(String param1, String param2) {
-        PeliculasComprarFragment fragment = new PeliculasComprarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        createList();
+
+        for (int i = 0; i<movie.getIdsCinemas().length; i++){
+            service.find(Integer.valueOf(movie.getIdsCinemas()[i])).enqueue(new Callback<CinePelicula>() {
+                @Override
+                public void onResponse(Call<CinePelicula> call, Response<CinePelicula> response) {
+                    if(response.isSuccessful()){
+                        cinePeliculas.add(response.body());
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CinePelicula> call, Throwable t) {
+
+                }
+            });
+        }
+
+
     }
+    void createList(){
+        recyclerView = bilding.RVPeliculasDetalles;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
+        adapter  = new CineAdapterPelicula(cinePeliculas,movie.getHoursCinemas());
+
+        recyclerView.setAdapter(adapter);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +123,21 @@ public class PeliculasComprarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        bilding  =  FragmentPeliculasComprarBinding.inflate(inflater,container,false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_peliculas_comprar, container, false);
+        return bilding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("https://661d25e3e7b95ad7fa6c4a63.mockapi.io/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Instanciar IContactService
+        service = retrofit.create(ICinePelicula.class);
     }
 }

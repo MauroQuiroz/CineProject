@@ -15,11 +15,14 @@
         android:theme="@style/Theme.CinePlanet"
         tools:targetApi="31">
         <activity
+            android:name=".ui.butaca.Butaca"
+            android:exported="true" >
+
+        </activity>
+        <activity
             android:name=".ui.peliculas.PeliculaShow"
             android:exported="false" />
-        <activity
-            android:name=".ui.MainActivity2"
-            android:exported="false" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -29,6 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

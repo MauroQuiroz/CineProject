@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:background="@drawable/bordes_redondeados"
+    android:gravity="center"
+    android:layout_marginStart="7dp"
+    android:id="@+id/hour_container"
+
+    >
+
+    <TextView
+        android:id="@+id/hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10:00 AM"
+        android:textSize="18dp"
+        android:textColor="@color/color_text"
+        android:textStyle="bold"
+
+        />
+
+
+
+</LinearLayout>

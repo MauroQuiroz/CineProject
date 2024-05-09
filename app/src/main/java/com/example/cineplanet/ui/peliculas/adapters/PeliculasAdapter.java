@@ -61,8 +61,6 @@ public class PeliculasAdapter extends RecyclerView.Adapter<PeliculasAdapter.View
 
             }
         });
-
-
     }
 
     @Override
