@@ -16,8 +16,8 @@ public class Movie {
     String urlmini;
     String url;
 
-    String[] idsCinemas;
-    String[][] hoursCinemas;
+    String[] idsCinemas = new String[0];
+    String[][] hoursCinemas  = new String[0][0];
 
     public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id, String urlmini, String url, String[] idsCinemas, String[][] hoursCinemas) {
         this.name = name;

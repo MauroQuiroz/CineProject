@@ -25,6 +25,7 @@ import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.Movie;
 import com.example.cineplanet.ui.peliculas.services.Movies;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -115,7 +116,19 @@ public class PeliculaShow extends AppCompatActivity {
         });
 
         //
-
+        new TabLayoutMediator(binding.tabPeliculas, binding.fragmentContainerPeliculasDetail,(tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("DETALLE");
+                    break;
+                case 1:
+                    tab.setText("COMPRAR");
+                    break;
+                default:
+                    tab.setText("Desconocido");
+                    break;
+            }
+        }).attach();
         binding.tabPeliculas.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

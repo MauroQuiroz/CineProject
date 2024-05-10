@@ -16,6 +16,7 @@ import com.example.cineplanet.databinding.ActivityMainBinding;
 import com.example.cineplanet.databinding.FragmentMainPeliculasBinding;
 import com.example.cineplanet.ui.peliculas.adapters.ViewPeliculasAdpater;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,6 +71,23 @@ public class MainPeliculasFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         viewPeliculasAdpater = new ViewPeliculasAdpater(this);
         bilding.fragmentContainerPeliculas.setAdapter(viewPeliculasAdpater);
+
+        new TabLayoutMediator(bilding.tabPeliculas, bilding.fragmentContainerPeliculas,(tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("En Cartelera");
+                    break;
+                case 1:
+                    tab.setText("Próximos Estrenos");
+                    break;
+                case 2:
+                    tab.setText("Festival de Cine Francés");
+                    break;
+                default:
+                    tab.setText("Desconocido");
+                    break;
+            }
+        }).attach();
 
         bilding.tabPeliculas.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

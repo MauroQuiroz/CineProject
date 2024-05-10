@@ -105,7 +105,7 @@ public class PeliculasComprarFragment extends Fragment {
     void createList(){
         recyclerView = bilding.RVPeliculasDetalles;
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
-        adapter  = new CineAdapterPelicula(cinePeliculas,movie.getHoursCinemas());
+        adapter  = new CineAdapterPelicula(cinePeliculas,movie);
 
         recyclerView.setAdapter(adapter);
     }

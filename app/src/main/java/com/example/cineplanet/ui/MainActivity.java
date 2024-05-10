@@ -1,22 +1,19 @@
 package com.example.cineplanet.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.fragment.app.FragmentTransitionImpl;
 
 import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.ActivityMainBinding;
+import com.example.cineplanet.search.BuscadorMain;
 import com.example.cineplanet.ui.home.MainHomeFragment;
 import com.example.cineplanet.ui.peliculas.MainPeliculasFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return true;
+        });
+        bilding.buscadorSearchMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BuscadorMain.class);
+
+                startActivity(intent);
+            }
         });
 
     }

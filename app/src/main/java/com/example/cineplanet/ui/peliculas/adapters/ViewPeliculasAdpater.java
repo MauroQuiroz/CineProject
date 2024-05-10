@@ -1,6 +1,7 @@
 package com.example.cineplanet.ui.peliculas.adapters;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -47,4 +48,7 @@ public class ViewPeliculasAdpater extends FragmentStateAdapter {
     public int getItemCount() {
         return 3;
     }
+
+
+
 }

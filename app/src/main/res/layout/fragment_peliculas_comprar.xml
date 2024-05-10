@@ -21,7 +21,8 @@
             android:paddingBottom="5dp"
 
             android:orientation="horizontal"
-            android:background="@color/color_background_car_estre_fes"
+            android:background="@drawable/borde_inferior"
+
             >
 
             <LinearLayout

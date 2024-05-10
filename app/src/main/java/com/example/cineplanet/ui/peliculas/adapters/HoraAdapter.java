@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineplanet.R;
 import com.example.cineplanet.ui.butaca.Butaca;
+import com.example.cineplanet.ui.peliculas.services.Movie;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -20,9 +22,11 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
 
     String[] items;
     Context context;
+    Movie movie;
 
-    public HoraAdapter(String[] items) {
+    public HoraAdapter(String[] items, Movie movie) {
         this.items = items;
+        this.movie = movie;
     }
 
     @NonNull
@@ -40,11 +44,12 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Butaca.class );
+                String sData = new Gson().toJson(movie);
+                intent.putExtra("movie",sData);
                 context.startActivity(intent);
             }
         });
     }
-
     @Override
     public int getItemCount() {
         return items.length;

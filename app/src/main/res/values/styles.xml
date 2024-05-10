@@ -3,4 +3,8 @@
     <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="roudedImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
