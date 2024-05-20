@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.ActivityButacaBinding;
 import com.example.cineplanet.databinding.ActivityMainBinding;
+import com.example.cineplanet.ui.peliculas.services.CinePelicula;
 import com.example.cineplanet.ui.peliculas.services.Movie;
 import com.google.gson.Gson;
 
@@ -23,7 +24,7 @@ public class Butaca extends AppCompatActivity {
     ActivityButacaBinding binding;
     Movie movie;
 
-
+    CinePelicula cinePelicula;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,19 @@ public class Butaca extends AppCompatActivity {
 
         Intent intent = getIntent();
         String sData = intent.getStringExtra("movie");
-
+        String sData2 = intent.getStringExtra("cine");
 
 
         movie = new Gson().fromJson(sData, Movie.class);
+        cinePelicula = new Gson().fromJson(sData2, CinePelicula.class);
 
         binding.title.setText(movie.getName());
 
+        String ava = "";
+        for (String s : cinePelicula.getAvaliable()){
+            ava+=s+",";
+        }
+        binding.descripcionButaca.setText(cinePelicula.getAddress()+" | "+ava);
         binding.iconCloseButaca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

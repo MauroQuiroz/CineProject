@@ -75,7 +75,7 @@ public class CineAdapterPelicula extends RecyclerView.Adapter<CineAdapterPelicul
 
         recyclerView = holder.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
-        adapter  = new HoraAdapter(horas[position],movie);
+        adapter  = new HoraAdapter(horas[position],movie,items.get(position));
         recyclerView.setAdapter(adapter);
 
     }

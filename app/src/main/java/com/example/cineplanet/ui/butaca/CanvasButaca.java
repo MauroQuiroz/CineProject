@@ -12,6 +12,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -23,10 +24,12 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class CanvasButaca extends View {
     Paint paint;
     List<Circle> circles = new ArrayList<>();
+    int numW = 1;
     public CanvasButaca(Context context) {
         super(context);
         init();
@@ -40,6 +43,7 @@ public class CanvasButaca extends View {
         paint = new Paint();
         setBackgroundColor(Color.parseColor("#D5D8DF"));
 
+
     }
 
 
@@ -47,11 +51,14 @@ public class CanvasButaca extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
-
-
         drawPantalla(canvas);
         cargarDatos(canvas);
         drawCircles(canvas);
+        if(numW==1){
+            initDatos();
+            numW = 15;
+            invalidate();
+        }
 
 
     }
@@ -103,10 +110,12 @@ public class CanvasButaca extends View {
         canvas.drawPath(path, paint);
         canvas.restore();
 
+
     }
 
     void drawCircles(Canvas canvas){
-
+        canvas.save();
+        paint = new Paint();
         for(Circle circle : circles){
             Paint paint = new Paint();
             if(!circle.dispnible){
@@ -164,6 +173,7 @@ public class CanvasButaca extends View {
             }
 
         }
+        canvas.restore();
 
     }
     void drawSillaDeRuedas(Canvas canvas,int x,int y,String colorr){
@@ -172,7 +182,7 @@ public class CanvasButaca extends View {
         int initY=y;
         float scale = 0.8f;
 
-
+        canvas.save();
         canvas.translate(intiX, initY);
         canvas.scale(scale, scale);
         canvas.translate(-intiX, -initY);
@@ -197,29 +207,31 @@ public class CanvasButaca extends View {
         paint.setStyle(Paint.Style.STROKE);
         RectF rectF = new RectF(intiX+10 - 18, (initY+20) -18, intiX+10 + 18, (initY+20)  + 18);
         canvas.drawArc(rectF, 30, 180, false, paint);
-
+        canvas.restore();
     }
-    void cargarDatos(Canvas canvas){
-        Paint paint = new Paint();
+    void initDatos(){
         int xValue = 0;
         int yValue = 0;
         for (int i = 0;i < 11;i++){
-            paint.setColor(Color.parseColor("#6B6E75"));
-            paint.setTextSize(45);
-            paint.setTypeface(Typeface.DEFAULT_BOLD);
-            canvas.drawText( String.valueOf((char)(65+i)) ,this.getWidth()/2-490,480+yValue,paint);
-            //
             for (int j = 0; j < 4; j++){
 
                 if(i==10&&j==2){
                     circles.add(new Circle((this.getWidth()/2-400)+xValue,
                             (465)+yValue,25,false,12-j,String.valueOf((char)(65+i)),true,true));
-
                     xValue+=65;
                     continue;
                 }
-                circles.add(new Circle((this.getWidth()/2-400)+xValue,
-                        (465)+yValue,25,false,12-j,String.valueOf((char)(65+i)),false,true));
+                //
+                Random random = new Random();
+                int randomNumber = random.nextInt(20) + 1;
+                if(randomNumber==2){
+                    circles.add(new Circle((this.getWidth()/2-400)+xValue,
+                            (465)+yValue,25,false,12-j,String.valueOf((char)(65+i)),false,false));
+                }else{
+                    circles.add(new Circle((this.getWidth()/2-400)+xValue,
+                            (465)+yValue,25,false,12-j,String.valueOf((char)(65+i)),false,true));
+                }
+                //
                 xValue+=65;
             }
             xValue=0;
@@ -232,13 +244,37 @@ public class CanvasButaca extends View {
                     continue;
                 }
 
-                circles.add(new Circle((this.getWidth()/2-50)+xValue,
-                        (465)+yValue,25,false,8-j,String.valueOf((char)(65+i)),false,true));
+                //
+
+                Random random = new Random();
+                int randomNumber = random.nextInt(20) + 1;
+                if(randomNumber==2){
+                    circles.add(new Circle((this.getWidth()/2-50)+xValue,
+                            (465)+yValue,25,false,8-j,String.valueOf((char)(65+i)),false,false));
+                }else{
+                    circles.add(new Circle((this.getWidth()/2-50)+xValue,
+                            (465)+yValue,25,false,8-j,String.valueOf((char)(65+i)),false,true));
+                }
                 xValue+=65;
             }
             xValue=0;
             yValue += 85;
         }
+    }
+    void cargarDatos(Canvas canvas){
+        canvas.save();
+        ///
+        Paint paint = new Paint();
+        int yValue = 0;
+        for (int i = 0;i < 11;i++){
+            paint.setColor(Color.parseColor("#6B6E75"));
+            paint.setTextSize(45);
+            paint.setTypeface(Typeface.DEFAULT_BOLD);
+            canvas.drawText( String.valueOf((char)(65+i)) ,this.getWidth()/2-490,480+yValue,paint);
+
+            yValue += 85;
+        }
+        canvas.restore();
 
     }
 

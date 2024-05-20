@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+
 import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.ActivityMainBinding;
 import com.example.cineplanet.databinding.FragmentMainPeliculasBinding;
@@ -20,9 +22,12 @@ import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
 import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
 import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.Movies;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,6 +80,7 @@ public class PeliculasCarteleraFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -128,6 +134,27 @@ public class PeliculasCarteleraFragment extends Fragment {
 
         // Instanciar IContactService
         service = retrofit.create(IPeliculaShow.class);
+        ///
+        bilding.carteleraBtnFiltroCiudad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Filtro ciudad
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+                View view1 = LayoutInflater.from(getContext()).inflate(R.layout.filtrar_ciudad_peliculas_main, null);
+                bottomSheetDialog.setContentView(view1);
+
+                FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                if (bottomSheet != null) {
+                    BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+                    ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+                    int windowHeight = getResources().getDisplayMetrics().heightPixels;
+                    layoutParams.height = windowHeight;
+                    bottomSheet.setLayoutParams(layoutParams);
+                    behavior.setPeekHeight(windowHeight);
+                }
+                bottomSheetDialog.show();
+            }
+        });
 
 
 

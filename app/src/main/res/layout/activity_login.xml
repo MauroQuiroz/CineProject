@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".login.LoginActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:background="@drawable/borde_inferior">
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_lass_plus"
+            android:tint="@color/color_text"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Iniciar Sesión"
+            android:layout_marginStart="20dp"
+            android:textStyle="bold"
+            android:textSize="25dp"
+            android:textColor="@color/color_text"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <EditText
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="N° de Socio Cineplanet"
+            android:textColorHint="@color/text_secundario_tranparent"
+      />
+        <EditText
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="N° de Socio Cineplanet"
+            android:textColorHint="@color/text_secundario_tranparent"
+       />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textSize="16dp"
+            android:textColor="@color/color_text"
+            android:text="¿Olvidate tu contraseña?"/>
+        <Button
+            android:layout_marginTop="25dp"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:text="Ingresar"
+            android:backgroundTint="@color/color_text"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/color_text"
+            android:text="¿No Eres Socio Cineplanet?"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="15dp"
+            android:textColor="@color/color_text"
+            android:text="Uniéndote a nuestro programa Socio Cineplanet podrás acumular puntos de cada visita que realices y gozar de grandes beneficios. Conoce mas sobre el programa"
+            android:textAlignment="center"/>
+        <LinearLayout
+            android:layout_marginTop="25dp"
+            android:layout_width="180dp"
+            android:layout_height="50dp"
+            android:background="@drawable/lados_redondeados"
+            android:backgroundTint="@color/color_secundario"
+            android:gravity="center_vertical">
+            <ImageView
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/ic_user_circle"
+                android:tint="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unete"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_marginStart="25dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

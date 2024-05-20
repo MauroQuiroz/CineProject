@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineplanet.R;
 import com.example.cineplanet.ui.butaca.Butaca;
+import com.example.cineplanet.ui.peliculas.services.CinePelicula;
 import com.example.cineplanet.ui.peliculas.services.Movie;
 import com.google.gson.Gson;
 
@@ -23,10 +24,12 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
     String[] items;
     Context context;
     Movie movie;
+    CinePelicula cinePelicula;
 
-    public HoraAdapter(String[] items, Movie movie) {
+    public HoraAdapter(String[] items, Movie movie,CinePelicula cinePelicula) {
         this.items = items;
         this.movie = movie;
+        this.cinePelicula = cinePelicula;
     }
 
     @NonNull
@@ -46,6 +49,9 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
                 Intent intent = new Intent(context, Butaca.class );
                 String sData = new Gson().toJson(movie);
                 intent.putExtra("movie",sData);
+                String sData2 = new Gson().toJson(cinePelicula);
+                intent.putExtra("cine",sData2);
+
                 context.startActivity(intent);
             }
         });

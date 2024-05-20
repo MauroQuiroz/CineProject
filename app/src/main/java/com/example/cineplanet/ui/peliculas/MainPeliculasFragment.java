@@ -72,6 +72,7 @@ public class MainPeliculasFragment extends Fragment {
         viewPeliculasAdpater = new ViewPeliculasAdpater(this);
         bilding.fragmentContainerPeliculas.setAdapter(viewPeliculasAdpater);
 
+        //made by milo
         new TabLayoutMediator(bilding.tabPeliculas, bilding.fragmentContainerPeliculas,(tab, position) -> {
             switch (position) {
                 case 0:

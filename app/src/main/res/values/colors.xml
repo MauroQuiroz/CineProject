@@ -11,4 +11,8 @@
 
     <color name="color_text_secundario">#68696D</color>
     <color name="backgorund_search">#041E41</color>
+
+
+    <color name="filtro_ciudad">#2F83E3</color>
+    <color name="text_secundario_tranparent">#8068696D</color>
 </resources>
