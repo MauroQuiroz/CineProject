@@ -69,7 +69,7 @@ public class CanvasButaca extends View {
         paint.setColor(Color.parseColor("#ABB4BC"));
         paint.setTextSize(65);
         paint.setTypeface(Typeface.DEFAULT_BOLD);
-        canvas.drawText("PANTALLA",(this.getWidth()/2)-165,150,paint);
+        canvas.drawText("PANTALLA ",(this.getWidth()/2)-165,150,paint);
 
 
         //Rect 1

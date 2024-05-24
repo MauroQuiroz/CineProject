@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<item>
+    <shape xmlns:android="http://schemas.android.com/apk/res/android"
+        android:shape="rectangle">
+        <!-- Fondo con gradiente blanco a gris -->
+        <gradient
+            android:startColor="#FFFFFF"
+            android:endColor="#CCCCCC"
+            android:angle="0" />
+        <corners android:radius="8dp" /> <!-- Ajusta el radio de las esquinas según tu preferencia -->
+        <stroke
+            android:width="2dp"
+            android:color="#000000" /> <!-- Cambia el color del borde según tu preferencia -->
+    </shape>
+</item>
+</selector>

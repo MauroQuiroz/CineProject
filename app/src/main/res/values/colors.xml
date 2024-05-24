@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#ff0000</color>
     <color name="menu_hover">#0D1F40</color>
     <color name="color_text">#003F89</color>
     <color name="color_icons">#003F89</color>
@@ -15,4 +16,9 @@
 
     <color name="filtro_ciudad">#2F83E3</color>
     <color name="text_secundario_tranparent">#8068696D</color>
+
+    <color name="genero_background">#C7CACF</color>
+
+
+    <color name="background_pdf">#C0C1C2</color>
 </resources>

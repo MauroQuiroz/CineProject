@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -15,19 +17,13 @@
         android:theme="@style/Theme.CinePlanet"
         tools:targetApi="31">
         <activity
-            android:name=".login.LoginActivity"
+            android:name=".perfil.PerfilActivity"
             android:exported="false" />
         <activity
-            android:name=".search.BuscadorMain"
-            android:exported="true" />
-        <activity
-            android:name=".ui.butaca.Butaca"
-            android:exported="true" />
-        <activity
-            android:name=".ui.peliculas.PeliculaShow"
+            android:name=".login.pdf.ShowPDFActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".login.RegistroActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +31,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".login.LoginActivity"
+            android:exported="true" />
+        <activity
+            android:name=".search.BuscadorMain"
+            android:exported="true" />
+        <activity
+            android:name=".ui.butaca.Butaca"
+            android:exported="false" />
+        <activity
+            android:name=".ui.peliculas.PeliculaShow"
+            android:exported="false" />
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

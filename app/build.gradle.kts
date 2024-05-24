@@ -48,16 +48,19 @@ dependencies {
     implementation("androidx.fragment:fragment:$fragment_version")
     implementation("com.squareup.picasso:picasso:2.71828")
 
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
 
     //Slider
-    implementation ("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.5.0")
 
     // Circle Indicator (To fix the xml preview "Missing classes" error)
-    implementation ("me.relex:circleindicator:2.1.6")
+    implementation("me.relex:circleindicator:2.1.6")
 
-    implementation ("org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0")
+    implementation("org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0")
+
+    //dpf
+    implementation ("com.dmitryborodin:pdfview-android:1.1.0")
 }
