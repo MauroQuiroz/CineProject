@@ -11,7 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.ActivityMainBinding;
+import com.example.cineplanet.login.LoginActivity;
+import com.example.cineplanet.login.RegistroActivity;
 import com.example.cineplanet.search.BuscadorMain;
+import com.example.cineplanet.ui.cines.CinesFragment;
 import com.example.cineplanet.ui.home.MainHomeFragment;
 import com.example.cineplanet.ui.peliculas.MainPeliculasFragment;
 
@@ -34,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
             if(item.getItemId()==R.id.moviesM){
                 replaceFragment(new MainPeliculasFragment());
             }
-
+            if(item.getItemId()==R.id.cinemaM){
+                replaceFragment(new CinesFragment());
+            }
             return true;
         });
         bilding.buscadorSearchMain.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        bilding.btnRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
     public void replaceFragment(Fragment fragment){

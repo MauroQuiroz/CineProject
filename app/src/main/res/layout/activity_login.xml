@@ -17,10 +17,11 @@
         android:background="@drawable/borde_inferior_filtro"
         >
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_lass_plus"
             android:tint="@color/color_text"
+            android:id="@+id/back_login"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -98,7 +99,8 @@
             android:layout_width="180dp"
             android:layout_height="50dp"
             android:text="Ingresar"
-            android:backgroundTint="@color/color_text"/>
+            android:backgroundTint="@color/color_text"
+            android:textColor="@color/white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,6 +118,7 @@
             android:text="Uniéndote a nuestro programa Socio Cineplanet podrás acumular puntos de cada visita que realices y gozar de grandes beneficios. Conoce mas sobre el programa"
             android:textAlignment="center"/>
         <LinearLayout
+            android:id="@+id/login_registro"
             android:layout_marginTop="25dp"
             android:layout_width="180dp"
             android:layout_height="50dp"

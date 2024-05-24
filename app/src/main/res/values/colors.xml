@@ -21,4 +21,6 @@
 
 
     <color name="background_pdf">#C0C1C2</color>
+    <color name="background_menu">#FFFFFF</color>
+    <color name="back_cines">#F3F3F3</color>
 </resources>

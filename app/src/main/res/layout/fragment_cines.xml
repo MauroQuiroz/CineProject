@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.cines.CinesFragment"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/cartelera_options"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:orientation="horizontal"
+
+        >
+
+        <LinearLayout
+            android:id="@+id/filtro_ciudad_cine_main"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_location3"
+                android:tint="@color/color_icons" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ciudad"
+
+                android:textColor="@color/color_text"
+                android:textStyle="bold"
+                android:textSize="14sp"
+
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btn_sala_filtro"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_cinema_sala"
+                android:tint="@color/color_icons"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sala"
+                android:textColor="@color/color_text"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="5dp"
+        android:id="@+id/Rv_Cines_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_pdf"
+        />
+</LinearLayout>

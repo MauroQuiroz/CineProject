@@ -88,6 +88,12 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
         registrar();
         initDatos();
         Subrrayados();
+        binding.backRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     void initDatos(){

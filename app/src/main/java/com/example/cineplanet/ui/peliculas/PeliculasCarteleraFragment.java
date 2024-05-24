@@ -19,6 +19,7 @@ import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.ActivityMainBinding;
 import com.example.cineplanet.databinding.FragmentMainPeliculasBinding;
 import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
+import com.example.cineplanet.ui.cines.ICiudad;
 import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
 import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.Movies;
@@ -143,6 +144,9 @@ public class PeliculasCarteleraFragment extends Fragment {
                 View view1 = LayoutInflater.from(getContext()).inflate(R.layout.filtrar_ciudad_peliculas_main, null);
                 bottomSheetDialog.setContentView(view1);
 
+
+
+
                 FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
                 if (bottomSheet != null) {
                     BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
@@ -155,8 +159,7 @@ public class PeliculasCarteleraFragment extends Fragment {
                 bottomSheetDialog.show();
             }
         });
-
-
+        
 
     }
 }
