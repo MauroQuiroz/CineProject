@@ -34,7 +34,6 @@ public class PeliculasDetalleFragment extends Fragment {
 
     public PeliculasDetalleFragment(Movie data) {
         movie  = data;
-
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {

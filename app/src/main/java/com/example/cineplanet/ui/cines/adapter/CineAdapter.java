@@ -63,6 +63,15 @@ public class CineAdapter extends RecyclerView.Adapter<CineAdapter.Viewholder> {
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
         holder.name.setText(resultados.get(position).getName());
         holder.address.setText(resultados.get(position).getAddress());
+
+        String dis = "";
+        if (resultados.get(position).getDistancia()>= 1000) {
+            dis  = String.format("%.2f", resultados.get(position).getDistancia() / 1000) + " km";
+        } else {
+            dis = String.format("%.0f", resultados.get(position).getDistancia()) + " m";
+        }
+
+        holder.distancia.setText( dis);
     }
 
     @Override
@@ -74,10 +83,12 @@ public class CineAdapter extends RecyclerView.Adapter<CineAdapter.Viewholder> {
 
         TextView name;
         TextView address;
+        TextView distancia;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name_cine);
             address  =itemView.findViewById(R.id.txt_direction_cine);
+            distancia  =itemView.findViewById(R.id.distancia);
         }
     }
 }

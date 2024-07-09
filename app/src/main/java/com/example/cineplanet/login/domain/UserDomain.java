@@ -36,7 +36,9 @@ public class UserDomain {
         this.favoriteCinema = favoriteCinema;
         this.id = id;
     }
+    public UserDomain(){
 
+    }
 
 
     public String getName() {

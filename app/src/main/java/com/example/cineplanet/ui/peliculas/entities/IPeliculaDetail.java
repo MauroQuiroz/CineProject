@@ -1,7 +1,6 @@
 package com.example.cineplanet.ui.peliculas.entities;
 
 import com.example.cineplanet.ui.peliculas.services.Movie;
-import com.example.cineplanet.ui.peliculas.services.Movies;
 
 import java.util.List;
 
@@ -15,20 +14,20 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IPeliculaDetail {
-    @GET("/movie-detail")
+    @GET("/movies")
     Call<List<Movie>> getAll();
-    @GET("/movie-detail")
+    @GET("/movies")
     Call<List<Movie>> getAll(@Query("status") String status);
 
-    @GET("/movie-detail/{id}")
+    @GET("/movies/{id}")
     Call<Movie> find(@Path("id") int id);
 
-    @POST("/movie-detail")
+    @POST("/movies")
     Call<Movie> create(@Body Movie contact);
 
-    @PUT("/movie-detail/{id}")
+    @PUT("/movies/{id}")
     Call <Movie> update(@Path("id") int id, @Body Movie movie);
 
-    @DELETE("/movie-detail/{id}")
+    @DELETE("/movies/{id}")
     Call <Void> delete(@Path("id") int id);
 }

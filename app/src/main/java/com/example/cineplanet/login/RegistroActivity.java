@@ -21,36 +21,30 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cineplanet.R;
-import com.example.cineplanet.databinding.ActivityMainBinding;
 import com.example.cineplanet.databinding.ActivityRegistroBinding;
 import com.example.cineplanet.domain.CineDomain;
 import com.example.cineplanet.login.Entities.IUser;
 import com.example.cineplanet.login.domain.UserDomain;
 import com.example.cineplanet.login.pdf.ShowPDFActivity;
-import com.example.cineplanet.perfil.PerfilActivity;
-import com.example.cineplanet.ui.peliculas.adapters.CineAdapterPelicula;
-import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaDetail;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
-import com.example.cineplanet.ui.peliculas.services.CinePelicula;
-import com.example.cineplanet.ui.peliculas.services.Movies;
+import com.example.cineplanet.ui.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -72,6 +66,8 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
     IUbigeo serviceDepart;
 
     //
+
+    DatabaseReference mDataBase;
     private Retrofit retrofitRegsitro;
     IUser serviceUser;
     String departamentoSeleccionado;
@@ -81,6 +77,7 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityRegistroBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initGenders();
@@ -88,12 +85,16 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
         registrar();
         initDatos();
         Subrrayados();
+        setContainerEnabled(true);
+        binding.progressBar.setVisibility(View.GONE);
         binding.backRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+
+        mDataBase  = FirebaseDatabase.getInstance().getReference();
     }
 
     void initDatos(){
@@ -101,6 +102,8 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
         binding.btnUnete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 Registro();
             }
         });
@@ -317,8 +320,6 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
             public void onResponse(Call<List<CineDomain>> call, Response<List<CineDomain>> response) {
                 if(response.isSuccessful()){
                     adapter  = new CineFavoritoAdapter(response.body(),registroActivity);
-                }else{
-
                 }
             }
             @Override
@@ -386,6 +387,7 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
 
     void Registro(){
         boolean isValid = true;
+        FirebaseAuth mAuth= FirebaseAuth.getInstance();
         //
         String nombre = binding.nombre.getText().toString().trim();
         if (TextUtils.isEmpty(nombre)) {
@@ -501,14 +503,14 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
         }
         //Porfin Registro
 
-       if(!isValid){
-           binding.errorTextViewTotal.setText("Algunos campos incorrectos");
-           binding.errorTextViewTotal.setVisibility(View.VISIBLE);
+        if(!isValid){
+            binding.errorTextViewTotal.setText("Algunos campos incorrectos");
+            binding.errorTextViewTotal.setVisibility(View.VISIBLE);
 
-       }
+        }
         if(isValid){
+            Log.i("registro","EEEyeeesssR");
             binding.errorTextViewTotal.setText("");
-            binding.errorTextViewTotal.setVisibility(View.GONE);
 
             String gender = "Hombre";
             if(!genderSelect){
@@ -531,7 +533,39 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
                     0
 
             );
-            serviceUser.create(userDomain).enqueue(new Callback<UserDomain>() {
+            Log.i("registro","yeeesssREEEEEEEEEEEE");
+            binding.progressBar.setVisibility(View.VISIBLE);
+            setContainerEnabled(false);
+            mAuth.createUserWithEmailAndPassword(userDomain.getEmail(),userDomain.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        String id = mAuth.getCurrentUser().getUid();
+                        Log.i("registro","yeeesssR");
+                        mDataBase.child("Users").child(id).setValue(userDomain).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if(task.isSuccessful()){
+
+                                    Intent intent = new Intent(RegistroActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    finish();
+                                }
+                            }
+                        });
+                    }else{
+                        Log.i("registro","No se pudo registrar");
+                        Exception e = task.getException();
+                        if (e != null) {
+                            Log.e("registroSDSD", e.getMessage());
+                        }
+                    }
+
+
+                }
+            });
+            /*serviceUser.create(userDomain).enqueue(new Callback<UserDomain>() {
                 @Override
                 public void onResponse(Call<UserDomain> call, Response<UserDomain> response) {
                     Intent intent = new Intent(RegistroActivity.this, PerfilActivity.class);
@@ -542,7 +576,7 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
                 public void onFailure(Call<UserDomain> call, Throwable t) {
                     Log.i("userReg","snooouu",t);
                 }
-            });
+            });*/
 
         }
 
@@ -619,5 +653,17 @@ public class RegistroActivity extends AppCompatActivity implements IRecyFromActi
                 bottomSheetDialog.show();
             }
         });
+    }
+    private void setContainerEnabled(boolean enabled) {
+        binding.main.setEnabled(enabled);
+        binding.scrolll.setEnabled(enabled);
+        binding.btnUnete.setEnabled(enabled);
+        binding.cinemaFavorito.setEnabled(enabled);
+        binding.container.setEnabled(enabled);
+        if (enabled) {
+            binding.container.setAlpha(1f); // Restaura la opacidad completa
+        } else {
+            binding.container.setAlpha(0.5f); // Aplica una opacidad reducida para indicar inactividad
+        }
     }
 }

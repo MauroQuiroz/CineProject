@@ -5,25 +5,18 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.cineplanet.R;
-import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
 import com.example.cineplanet.databinding.FragmentPeliculasComprarBinding;
 import com.example.cineplanet.ui.peliculas.adapters.CineAdapterPelicula;
-import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
 import com.example.cineplanet.ui.peliculas.entities.ICinePelicula;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
 import com.example.cineplanet.ui.peliculas.services.CinePelicula;
 import com.example.cineplanet.ui.peliculas.services.Movie;
-import com.example.cineplanet.ui.peliculas.services.Movies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +76,8 @@ public class PeliculasComprarFragment extends Fragment {
         super.onResume();
         createList();
 
-        for (int i = 0; i<movie.getIdsCinemas().length; i++){
-            service.find(Integer.valueOf(movie.getIdsCinemas()[i])).enqueue(new Callback<CinePelicula>() {
+        for (int i = 0; i<movie.getIdsCinemas().size(); i++){
+            service.find(Integer.valueOf(movie.getIdsCinemas().get(i))).enqueue(new Callback<CinePelicula>() {
                 @Override
                 public void onResponse(Call<CinePelicula> call, Response<CinePelicula> response) {
                     if(response.isSuccessful()){

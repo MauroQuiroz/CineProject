@@ -20,10 +20,12 @@ public class FiltroCiudadCineAdpater extends RecyclerView.Adapter<FiltroCiudadCi
     List<CiudadesDomain> items;
     Context context;
     IClickFiltroCiudad iClickFiltroCiudad;
+    Boolean bolean;
 
-    public FiltroCiudadCineAdpater(List<CiudadesDomain> items,IClickFiltroCiudad iClickFiltroCiudad) {
+    public FiltroCiudadCineAdpater(List<CiudadesDomain> items,IClickFiltroCiudad iClickFiltroCiudad,Boolean bolean) {
         this.items = items;
         this.iClickFiltroCiudad = iClickFiltroCiudad;
+        this.bolean = bolean;
     }
 
     @NonNull
@@ -41,7 +43,12 @@ public class FiltroCiudadCineAdpater extends RecyclerView.Adapter<FiltroCiudadCi
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iClickFiltroCiudad.clickFiltroCiudad(items.get(position).getIdCinemas());
+                if(!bolean){
+                    iClickFiltroCiudad.clickFiltroCiudad(items.get(position).getIdCinemas(),items.get(position).getName());
+                }else{
+                    iClickFiltroCiudad.clickFiltroCiudad(items.get(position).getIdMovies(),items.get(position).getName());
+                }
+
             }
         });
     }

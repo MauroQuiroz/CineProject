@@ -8,13 +8,49 @@ public class CineDomain {
     private String address;
     private List<String> avaliable;
     private String id;
-
+    private double latitude;
+    private double longitude;
+    private float distancia;
     public CineDomain(String name, String distance, String address, List<String> avaliable, String id) {
         this.name = name;
         this.distance = distance;
         this.address = address;
         this.avaliable = avaliable;
         this.id = id;
+    }
+
+    public CineDomain(String name, String distance, String address, List<String> avaliable, String id, double latitude, double longitude) {
+        this.name = name;
+        this.distance = distance;
+        this.address = address;
+        this.avaliable = avaliable;
+        this.id = id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public float getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(float distancia) {
+        this.distancia = distancia;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public String getName() {

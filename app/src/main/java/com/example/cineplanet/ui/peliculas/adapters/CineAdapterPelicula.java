@@ -24,7 +24,7 @@ import java.util.List;
 public class CineAdapterPelicula extends RecyclerView.Adapter<CineAdapterPelicula.Viewholder> {
 
     List<CinePelicula> items;
-    String[][] horas;
+    List<List<String>> horas;
     Context context;
     Movie movie;
 
@@ -54,29 +54,31 @@ public class CineAdapterPelicula extends RecyclerView.Adapter<CineAdapterPelicul
         }else{
             holder.container.setBackgroundColor(Color.parseColor("#FFFFFF"));
         }
-
-        holder.title.setText(items.get(position).getName());
-        holder.descripcion.setText(items.get(position).getAddress());
-        String av = "";
-        for (String str : items.get(position).getAvaliable()){
-            av+=str+",";
-        }
-        holder.avaliable.setText(av);
-        holder.desplegable.setVisibility(View.GONE);
-        holder.close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                toggleImageVisibility(holder.desplegable,holder.close);
-
+        if (position >= 0 && position < items.size() && position < horas.size()) {
+            holder.title.setText(items.get(position).getName());
+            holder.descripcion.setText(items.get(position).getAddress());
+            String av = "";
+            for (String str : items.get(position).getAvaliable()) {
+                av += str + ",";
             }
-        });
+            holder.avaliable.setText(av);
+            holder.desplegable.setVisibility(View.GONE);
+            holder.close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleImageVisibility(holder.desplegable, holder.close);
+                }
+            });
 
+            recyclerView = holder.recyclerView;
+            recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
 
-        recyclerView = holder.recyclerView;
-        recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false));
-        adapter  = new HoraAdapter(horas[position],movie,items.get(position));
-        recyclerView.setAdapter(adapter);
+            adapter = new HoraAdapter(horas.get(position), movie, items.get(position));
+            recyclerView.setAdapter(adapter);
+        } else {
+            // Manejo del caso en el que la posición no es válida para items o horas
+
+        }
 
     }
 

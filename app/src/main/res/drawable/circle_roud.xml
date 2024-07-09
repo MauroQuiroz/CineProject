@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="oval">
+            <solid android:color="@color/color_text"/> <!-- Cambia el color al que prefieras -->
+            <size
+                android:width="100dp"
+                android:height="100dp"/>
+            <stroke
+                android:width="1dp"
+                android:color="#FFFFFF"/> <!-- Ancho y color del borde -->
+            <size
+                android:width="100dp"
+                android:height="100dp"/> <!-- Ajusta el tamaño según tus necesidades -->
+        </shape>
+
+    </item>
+    <!-- res/drawable/circle_background.xml -->
+
+</selector>

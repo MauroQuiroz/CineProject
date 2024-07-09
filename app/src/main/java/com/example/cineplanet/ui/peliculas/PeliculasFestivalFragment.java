@@ -1,5 +1,8 @@
 package com.example.cineplanet.ui.peliculas;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,17 +12,38 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.example.cineplanet.R;
-import com.example.cineplanet.databinding.FragmentPeliculasEstrenosBinding;
 import com.example.cineplanet.databinding.FragmentPeliculasFestivalBinding;
+import com.example.cineplanet.ui.cines.ICiudad;
+import com.example.cineplanet.ui.cines.IClickFiltroCiudad;
+import com.example.cineplanet.ui.cines.adapter.FiltroCiudadCineAdpater;
+import com.example.cineplanet.ui.cines.domain.CiudadesDomain;
 import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
-import com.example.cineplanet.ui.peliculas.services.Movies;
+import com.example.cineplanet.ui.peliculas.daos.MovieDAO;
+import com.example.cineplanet.ui.peliculas.entities.IPeliculaDetail;
+import com.example.cineplanet.ui.peliculas.services.AppDatabase;
+import com.example.cineplanet.ui.peliculas.services.DescargarImagenTask;
+import com.example.cineplanet.ui.peliculas.services.Movie;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +57,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link PeliculasFestivalFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PeliculasFestivalFragment extends Fragment {
+public class PeliculasFestivalFragment extends Fragment implements IClickFiltroCiudad {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -46,10 +70,23 @@ public class PeliculasFestivalFragment extends Fragment {
 
     FragmentPeliculasFestivalBinding bilding;
     private Retrofit retrofit;
-    IPeliculaShow service;
-    List<Movies> movies;
-    RecyclerView.Adapter adapter;
+    IPeliculaDetail service;
+    List<Movie> movies;
     RecyclerView recyclerView;
+    boolean carga = false;
+    String conexion = "si";
+
+    private DatabaseReference mDatabase;
+    private MovieDAO movieDao;
+    //Ciudad
+    PeliculasAdapter adapter;
+    private Retrofit retrofitCiudad;
+    ICiudad serviceCiudad;
+    FiltroCiudadCineAdpater adapterCiudad;
+    RecyclerView recyclerViewCiudad;
+    Context context;
+    BottomSheetDialog bottomSheetDialog;
+
     public PeliculasFestivalFragment() {
         // Required empty public constructor
     }
@@ -92,6 +129,11 @@ public class PeliculasFestivalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ///AWQUIII
+        //Instacia firefatabse
+        //mDatabase = FirebaseDatabase.getInstance().getReference("movies");
+        ///AWQUIII
+        AppDatabase db = AppDatabase.getInstance(this.getContext());
+        movieDao = db.movieDAO();
         // Instanciar Retrofit
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://661d2649e7b95ad7fa6c4c14.mockapi.io/")
@@ -99,37 +141,158 @@ public class PeliculasFestivalFragment extends Fragment {
                 .build();
 
         // Instanciar IContactService
-        service = retrofit.create(IPeliculaShow.class);
+        service = retrofit.create(IPeliculaDetail.class);
+
+        service.getAll("festival").enqueue(new Callback<List<Movie>>() {
+            @Override
+            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
+                if(response.isSuccessful()){
+                    movies = response.body();
+                    createMovies();
+                    conexion = "si";
+                    carga = true;
+
+                    for (Movie peli : movies) {
+                        // Verificar si la película ya existe
+                        if (movieDao.countMovieById(peli.getId()) == 0) {
+                            // Si la película no existe, insertarla
+                            movieDao.insert(peli);
+                            guardarImagenesLocalmente(peli);
+                        } else {
+                            if(peli.getDatosImagen()==null){
+                                guardarImagenesLocalmente(peli);
+                            }
+                            Log.i("MovieInsertion", "La película con ID " + peli.getId() + " ya existe en la base de datos.");
+                        }
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Movie>> call, Throwable t) {
+                conexion = "no";
+                carga = true;
+                List<Movie> moviess =  movieDao.getMoviesEnFestival();
+                moviess.addAll(moviess);
+                movies = moviess;
+                createMovies();
+            }
+        });
+        //Ciudad
+        //Ciudad
+        //Filtro ciudad
+        retrofitCiudad = new Retrofit.Builder()
+                .baseUrl("https://664b8b4835bbda10987d536c.mockapi.io/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Instanciar IContactService
+        serviceCiudad =  retrofitCiudad.create(ICiudad.class);
+        PeliculasFestivalFragment peliculasFestivalFragment = this;
+        serviceCiudad.getAll().enqueue(new Callback<List<CiudadesDomain>>() {
+            @Override
+            public void onResponse(Call<List<CiudadesDomain>> call, Response<List<CiudadesDomain>> response) {
+                if(response.isSuccessful()) {
+
+                    adapterCiudad  = new FiltroCiudadCineAdpater(response.body(),peliculasFestivalFragment ,true);
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<CiudadesDomain>> call, Throwable t) {
+                Log.i("kkkkkk","nouu",t);
+            }
+        });
+        crearFiltroCiudad();
+
+        bilding.carteleraBtnFiltroCiudad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Filtro ciudad
+                recyclerViewCiudad.setAdapter(adapterCiudad);
+
+                bottomSheetDialog.show();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        service.getAll("festival").enqueue(new Callback<List<Movies>>() {
-            @Override
-            public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
-                if (response.code() == 200) {
-                    movies = response.body();
-                    createMovies();
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Movies>> call, Throwable t) {
+        if(carga){
+            createMovies();
+        }
+    }
+    void guardarImagenesLocalmente(Movie movie){
 
-            }
-        });
+        DescargarImagenTask descargarImagenTask = new DescargarImagenTask(this.getContext(),movie.getId(),true);
+        descargarImagenTask.execute(movie.getSrc());
+
+        DescargarImagenTask descargarImagenTask2 = new DescargarImagenTask(this.getContext(),movie.getId(),false);
+        descargarImagenTask2.execute(movie.getUrlmini());
+
+    }
+    void crearFiltroCiudad(){
+        bottomSheetDialog = new BottomSheetDialog(requireContext());
+        View view1 = LayoutInflater.from(getContext()).inflate(R.layout.filtrar_ciudad_peliculas_main, null);
+
+
+        bottomSheetDialog.setContentView(view1);
+
+
+        recyclerViewCiudad = view1.findViewById(R.id.rv_filtro_ciudadd);
+        recyclerViewCiudad.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+
+
+
+        FrameLayout bottomSheet = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        if (bottomSheet != null) {
+            BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+            ViewGroup.LayoutParams layoutParams = bottomSheet.getLayoutParams();
+            int windowHeight = getResources().getDisplayMetrics().heightPixels;
+            layoutParams.height = windowHeight;
+            bottomSheet.setLayoutParams(layoutParams);
+            behavior.setPeekHeight(windowHeight);
+        }
     }
     public void createMovies(){
 
         recyclerView = bilding.carteleraRecycler;
         recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(),LinearLayoutManager.VERTICAL,false));
-        adapter  = new PeliculasAdapter(movies);
+        adapter  = new PeliculasAdapter(movies,conexion);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this.getContext(), 2); // 2 columnas
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.setAdapter(adapter);
 
+    }
 
+    @Override
+    public void clickFiltroCiudad(List<Integer> idMovies, String name) {
+        Log.i("puertasss",new Gson().toJson(idMovies));
+        adapter.getResultados().clear();
+        bilding.txtCiudadName.setText(name);
+        bilding.txtFechaName.setText("Fecha");
+        for (Movie movie: adapter.getItems()){
+
+            for(Integer i: idMovies){
+
+                if(movie.getId()==i){
+
+                    adapter.getResultados().add(movie);
+
+                    Log.i("puertasss",new Gson().toJson(movie));
+                }
+            }
+
+        }
+
+        adapter.notifyDataSetChanged();
+        bottomSheetDialog.dismiss();
     }
 }

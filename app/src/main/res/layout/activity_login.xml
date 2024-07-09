@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -10,138 +11,180 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:gravity="center_vertical"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:background="@drawable/borde_inferior_filtro"
-        >
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_lass_plus"
-            android:tint="@color/color_text"
-            android:id="@+id/back_login"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Iniciar Sesión"
-            android:layout_marginStart="20dp"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@color/color_text"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        >
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            app:boxBackgroundMode="none"
-            android:textColorHint="@color/text_secundario_tranparent"
-            android:background="@drawable/borde_inferior"
-            >
-
-             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                 android:paddingStart="0dp"
-                android:paddingEnd="0dp"
-                 android:paddingTop="0dp"
-                 android:paddingBottom="1dp"
-                android:hint="N° de Socio Cineplanet"
-                 android:textSize="18sp"
-                 />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginTop="25dp"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            app:boxBackgroundMode="none"
-            android:textColorHint="@color/text_secundario_tranparent"
-            android:background="@drawable/borde_inferior"
-            >
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingStart="0dp"
-                android:paddingEnd="0dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="1dp"
-                android:hint="Contraseña"
-                android:textSize="18sp"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textSize="16dp"
-            android:textColor="@color/color_text"
-            android:text="¿Olvidate tu contraseña?"/>
-        <Button
-            android:layout_marginTop="25dp"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:text="Ingresar"
-            android:backgroundTint="@color/color_text"
-            android:textColor="@color/white"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/color_text"
-            android:text="¿No Eres Socio Cineplanet?"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="15dp"
-            android:textColor="@color/color_text"
-            android:text="Uniéndote a nuestro programa Socio Cineplanet podrás acumular puntos de cada visita que realices y gozar de grandes beneficios. Conoce mas sobre el programa"
-            android:textAlignment="center"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/login_registro"
-            android:layout_marginTop="25dp"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:background="@drawable/lados_redondeados"
-            android:backgroundTint="@color/color_secundario"
-            android:gravity="center_vertical">
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:background="@drawable/borde_inferior_filtro"
+            >
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="15dp"
-                android:src="@drawable/ic_user_circle"
-                android:tint="@color/white"/>
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_lass_plus"
+                android:tint="@color/color_text"
+                android:id="@+id/back_login"
+                />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unete"
-                android:textSize="18dp"
+                android:text="Iniciar Sesión"
+                android:layout_marginStart="20dp"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:layout_marginStart="25dp"/>
+                android:textSize="25dp"
+                android:textColor="@color/color_text"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            >
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:boxBackgroundMode="none"
+                android:textColorHint="@color/text_secundario_tranparent"
+                android:background="@drawable/borde_inferior"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/correoElectronico"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="1dp"
+                    android:hint="Correo Electrónico"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/errorTextViewCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_marginTop="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                app:boxBackgroundMode="none"
+                android:textColorHint="@color/text_secundario_tranparent"
+                android:background="@drawable/borde_inferior"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="1dp"
+                    android:inputType="textPassword"
+                    android:hint="Contraseña"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/errorTextViewContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"/>
+
+            <TextView
+                android:id="@+id/olvide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textSize="16dp"
+                android:textColor="@color/color_text"
+                android:text="¿Olvidaste tu contraseña?"/>
+            <Button
+                android:id="@+id/inicio_sesion"
+                android:layout_marginTop="25dp"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:text="Ingresar"
+                android:backgroundTint="@color/color_text"
+                android:textColor="@color/white"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/color_text"
+                android:text="¿No Eres Socio Cineplanet?"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="15dp"
+                android:textColor="@color/color_text"
+                android:text="Uniéndote a nuestro programa Socio Cineplanet podrás acumular puntos de cada visita que realices y gozar de grandes beneficios. Conoce mas sobre el programa"
+                android:textAlignment="center"/>
+            <LinearLayout
+                android:id="@+id/login_registro"
+                android:layout_marginTop="25dp"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:background="@drawable/lados_redondeados"
+                android:backgroundTint="@color/color_secundario"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/ic_user_circle"
+                    android:tint="@color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unete"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="25dp"/>
+
+            </LinearLayout>
 
         </LinearLayout>
-
     </LinearLayout>
 
-</LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

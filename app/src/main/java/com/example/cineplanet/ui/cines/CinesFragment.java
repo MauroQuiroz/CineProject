@@ -1,38 +1,54 @@
 package com.example.cineplanet.ui.cines;
 
+import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
+
 
 import com.example.cineplanet.R;
 import com.example.cineplanet.databinding.FragmentCinesBinding;
-import com.example.cineplanet.databinding.FragmentPeliculasDetalleBinding;
 import com.example.cineplanet.ui.cines.adapter.CineAdapter;
 import com.example.cineplanet.ui.cines.adapter.FiltroCiudadCineAdpater;
+import com.example.cineplanet.ui.cines.domain.CalculateDistanceTask;
 import com.example.cineplanet.ui.cines.domain.CineDomain;
 import com.example.cineplanet.ui.cines.domain.CiudadesDomain;
-import com.example.cineplanet.ui.peliculas.adapters.PeliculasAdapter;
-import com.example.cineplanet.ui.peliculas.entities.ICinePelicula;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
-import com.example.cineplanet.ui.peliculas.services.CinePelicula;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -46,7 +62,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Use the {@link CinesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
+public class CinesFragment extends Fragment implements IClickFiltroCiudad, OnMapReadyCallback {
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -70,6 +86,14 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
     RecyclerView recyclerViewCiudad;
     FiltroCiudadCineAdpater adapterCiudad;
 
+    List<CineDomain> ciness;
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private LocationCallback locationCallback;
+    private Marker currentLocationMarker;
+    private ListView distanceListView;
+    Boolean adapaterCargado = false;
+
     public CinesFragment() {
         // Required empty public constructor
     }
@@ -85,18 +109,39 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        setRetainInstance(true);
+        Log.i("Estoydsfd","hola");
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+        locationCallback = new LocationCallback() {
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    Log.i("Estoydsfd","holasss");
+                    updateLocation(location);
+
+                }
+            }
+
+        };
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        } else {
+            startLocationUpdates();
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding  =  FragmentCinesBinding.inflate(inflater,container,false);
+        binding = FragmentCinesBinding.inflate(inflater, container, false);
         // Inflate the layout for this fragment
         return binding.getRoot();
     }
@@ -108,14 +153,16 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
         service.getAll().enqueue(new Callback<List<CineDomain>>() {
             @Override
             public void onResponse(Call<List<CineDomain>> call, Response<List<CineDomain>> response) {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
+
+                    ciness = response.body();
 
                     recyclerView = binding.RvCinesMain;
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
-                    adapter  = new CineAdapter(response.body());
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+                    adapter = new CineAdapter(response.body());
                     adapter.setResultados(response.body());
                     recyclerView.setAdapter(adapter);
-
+                    adapaterCargado = true;
                 }
             }
 
@@ -124,8 +171,56 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
 
             }
         });
+        startLocationUpdates();
     }
+    private void startLocationUpdates() {
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
+        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, null);
+    }
+    private void updateLocation(Location location) {
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if (currentLocationMarker != null) {
+            currentLocationMarker.setPosition(latLng);
+        } else {
+            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Ubicación Actual");
+            //currentLocationMarker = mMap.addMarker(markerOptions);
+        }
+
+        //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+        if(adapaterCargado){
+            new CalculateDistanceTask(ciness, location, adapter).execute();
+        }
+    }
+    private void calculateDistances(Location currentLocation) {
+        //Log.i("sdfdsgf",String.valueOf(currentLocation.getLatitude()));
+
+
+        if(adapaterCargado){
+            for (CineDomain cinema : ciness) {
+                Location cinemaLocation = new Location("");
+                cinemaLocation.setLatitude(cinema.getLatitude());
+                cinemaLocation.setLongitude(cinema.getLongitude());
+
+                float distance = currentLocation.distanceTo(cinemaLocation);
+
+                cinema.setDistancia(distance);
+
+            }
+            adapter.notifyDataSetChanged();
+        }
+
+
+
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -134,7 +229,14 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
         init();
 
     }
+
+
+
+
     void init(){
+
+
+
         binding.filtroCiudadCineMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,10 +273,10 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
         serviceCiudad.getAll().enqueue(new Callback<List<CiudadesDomain>>() {
             @Override
             public void onResponse(Call<List<CiudadesDomain>> call, Response<List<CiudadesDomain>> response) {
-                if(response.isSuccessful()){
-                    Log.i("kkkkkk","siu");
-                    adapterCiudad  = new FiltroCiudadCineAdpater(response.body(),cinesFragment);
+                if(response.isSuccessful()) {
 
+                    adapterCiudad  = new FiltroCiudadCineAdpater(response.body(),cinesFragment,false);
+                    Log.i("mi mentira",new Gson().toJson(response.body()));
                 }
 
             }
@@ -209,7 +311,8 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
     void filtroFromSala(String data){
 
         adapter.getResultados().clear();
-
+        binding.txtNameSala.setText(data);
+        binding.txtNameCine.setText("Ciudad");
         for (CineDomain cineDomain: adapter.getItems()){
             for(String dataCine: cineDomain.getAvaliable()){
                 if(dataCine.equals(data)){
@@ -296,10 +399,11 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
     }
 
     @Override
-    public void clickFiltroCiudad(List<Integer> idCines) {
-        Log.i("kkkkkkkkkk",String.valueOf(adapter.getItems().size()) );
-        adapter.getResultados().clear();
+    public void clickFiltroCiudad(List<Integer> idCines,String name) {
 
+        adapter.getResultados().clear();
+        binding.txtNameCine.setText(name);
+        binding.txtNameSala.setText("Sala");
         for (CineDomain cineDomain: adapter.getItems()){
 
             for(Integer i: idCines){
@@ -313,5 +417,21 @@ public class CinesFragment extends Fragment implements  IClickFiltroCiudad{
 
         adapter.notifyDataSetChanged();
         bottomSheetDialog.dismiss();
+    }
+    //
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    private void stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback);
+    }
+
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
     }
 }

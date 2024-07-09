@@ -7,4 +7,9 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+    <style name="CustomDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Personaliza el fondo del diálogo aquí -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- Ajusta cualquier otro atributo de estilo según sea necesario -->
+    </style>
 </resources>

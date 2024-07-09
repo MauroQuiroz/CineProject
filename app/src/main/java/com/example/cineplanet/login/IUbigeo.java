@@ -1,7 +1,5 @@
 package com.example.cineplanet.login;
 
-import com.example.cineplanet.ui.peliculas.services.Movies;
-
 import java.util.List;
 
 import retrofit2.Call;

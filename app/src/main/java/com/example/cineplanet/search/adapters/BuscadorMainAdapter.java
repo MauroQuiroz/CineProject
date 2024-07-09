@@ -2,6 +2,9 @@ package com.example.cineplanet.search.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +19,11 @@ import com.example.cineplanet.R;
 import com.example.cineplanet.ui.peliculas.PeliculaShow;
 import com.example.cineplanet.ui.peliculas.adapters.CineAdapterPelicula;
 import com.example.cineplanet.ui.peliculas.services.Movie;
+import com.google.gson.Gson;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +72,9 @@ public class BuscadorMainAdapter extends RecyclerView.Adapter<BuscadorMainAdapte
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
 
+
         Picasso.get().load(resultados.get(position).getUrlmini()).into(holder.image);
+
         holder.title.setText(resultados.get(position).getName());
         holder.genero.setText(resultados.get(position).getGender());
 
@@ -74,9 +82,10 @@ public class BuscadorMainAdapter extends RecyclerView.Adapter<BuscadorMainAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PeliculaShow.class);
-
-                intent.putExtra("idPelicula",resultados.get(position).getId());
+                intent.putExtra("id" ,String.valueOf(resultados.get(position).getId()) );
+                intent.putExtra("cxt", "si");
                 context.startActivity(intent);
+
             }
         });
     }

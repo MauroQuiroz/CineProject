@@ -1,35 +1,26 @@
 package com.example.cineplanet.ui.peliculas;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.cineplanet.R;
-import com.example.cineplanet.databinding.ActivityMainBinding;
 import com.example.cineplanet.databinding.ActivityPeliculaShowBinding;
-import com.example.cineplanet.databinding.FragmentPeliculasCarteleraBinding;
-import com.example.cineplanet.domain.PeliculaDetailDomain;
-import com.example.cineplanet.domain.PeliculaDomain;
 import com.example.cineplanet.ui.peliculas.adapters.ViewDetallePeliculasAdapter;
-import com.example.cineplanet.ui.peliculas.adapters.ViewPeliculasAdpater;
+import com.example.cineplanet.ui.peliculas.daos.MovieDAO;
 import com.example.cineplanet.ui.peliculas.entities.IPeliculaDetail;
-import com.example.cineplanet.ui.peliculas.entities.IPeliculaShow;
+import com.example.cineplanet.ui.peliculas.services.AppDatabase;
 import com.example.cineplanet.ui.peliculas.services.Movie;
-import com.example.cineplanet.ui.peliculas.services.Movies;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,22 +35,28 @@ public class PeliculaShow extends AppCompatActivity {
 
     private Retrofit retrofit;
     IPeliculaDetail service;
-    Movie movie;
+    int id;
     ViewDetallePeliculasAdapter viewPeliculasAdpater;
-
+    String cxt = "no";
+    Movie movie;
+    private MovieDAO movieDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = ActivityPeliculaShowBinding.inflate(getLayoutInflater());
+        binding = ActivityPeliculaShowBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        AppDatabase db = AppDatabase.getInstance(this);
+        movieDao = db.movieDAO();
 
-        idPelicula = getIntent().getIntExtra("idPelicula",1);
+        id = Integer.valueOf(getIntent().getStringExtra("id"));
+        cxt = getIntent().getStringExtra("cxt");
+        movie =   movieDao.getMovieById(id);
+        MostrarDatos();;
 
-
-        init();
-
+        //init();
     }
-    private  void init(){
+
+    private void init() {
 
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://661d2649e7b95ad7fa6c4c14.mockapi.io/")
@@ -70,53 +67,62 @@ public class PeliculaShow extends AppCompatActivity {
         service = retrofit.create(IPeliculaDetail.class);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        service.find(idPelicula).enqueue(new Callback<Movie>() {
-            @Override
-            public void onResponse(Call<Movie> call, Response<Movie> response) {
-                if (response.code() == 200) {
-                    movie = response.body();
-                    MostrarDatos();
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Movie> call, Throwable t) {
-
-            }
-        });
 
 
 
         ///
 
     }
-    private void MostrarDatos(){
+
+    private void MostrarDatos() {
 
         binding.peliculaTitle.setText(movie.getName());
-        binding.generoHoraEdad.setText(movie.getGender()+" | "+movie.getDuration()+" | "+movie.getAge());
-        Picasso.get().load(movie.getUrlmini()).into(binding.imageMini);
+        binding.generoHoraEdad.setText(movie.getGender() + " | " + movie.getDuration() + " | " + movie.getAge());
+        Log.i("jhuleeeei", "Datos de imagen recibidos: " + "aNTES DE SIUU");
+        if(cxt.equals("si")){
+            Picasso.get().load(movie.getUrlmini()).into(binding.imageMini);
+            binding.imageMini.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String videoUrl = movie.getUrl(); // Reemplaza VIDEO_ID con el ID del video
+
+                    // Abrir el enlace en la aplicación de YouTube
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
+                    startActivity(intent);
+                }
+            });
+        }else{
+            byte[] datosImagen = movie.getDatosImagenMini();
+            if (datosImagen != null && datosImagen.length > 0) {
+                Log.i("jhuleeeei", "Datos de imagen recibidos: " + datosImagen.length + " bytes");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(datosImagen, 0, datosImagen.length);
+                if (bitmap != null) {
+                    binding.imageMini.setImageBitmap(bitmap);
+                    Log.i("jhuleeeei", "Imagen decodificada y establecida en ImageView");
+                } else {
+                    Log.e("jhuleeeei", "La decodificación de la imagen falló.");
+                   binding.imageMini.setImageResource(R.drawable.no_internet); // Placeholder
+                }
+            } else {
+                Log.i("jhuleeeei", "Datos de imagen nulos o vacíos");
+               binding.imageMini.setImageResource(R.drawable.no_internet); // Placeholder
+            }
+
+        }
+
 
         ///FrAGMNET
-        viewPeliculasAdpater = new  ViewDetallePeliculasAdapter(this,movie);
+        viewPeliculasAdpater = new ViewDetallePeliculasAdapter(this, movie);
         binding.fragmentContainerPeliculasDetail.setAdapter(viewPeliculasAdpater);
 
-        binding.imageMini.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String videoUrl = movie.getUrl(); // Reemplaza VIDEO_ID con el ID del video
 
-                // Abrir el enlace en la aplicación de YouTube
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(videoUrl));
-                startActivity(intent);
-            }
-        });
 
         //
-        new TabLayoutMediator(binding.tabPeliculas, binding.fragmentContainerPeliculasDetail,(tab, position) -> {
+        new TabLayoutMediator(binding.tabPeliculas, binding.fragmentContainerPeliculasDetail, (tab, position) -> {
             switch (position) {
                 case 0:
                     tab.setText("DETALLE");
@@ -135,10 +141,12 @@ public class PeliculaShow extends AppCompatActivity {
                 String sData = new Gson().toJson(movie);
                 binding.fragmentContainerPeliculasDetail.setCurrentItem(tab.getPosition());
             }
+
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
 
             }
+
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 

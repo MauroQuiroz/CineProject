@@ -1,25 +1,42 @@
 package com.example.cineplanet.ui.peliculas.services;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import java.util.List;
 
+@Entity(tableName = "movie")
+@TypeConverters({ListConverter.class, ListListConverter.class})
 public class Movie {
-    String name;
-    String gender;
-    String duration;
-    String age;
-    String sinopsis;
-    String director;
-    String[] language;
-    String[] avaliable;
-    int id;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    private String src;
+    private String srcLocal = "";
+    private String status;
+    private String name;
+    private String gender;
+    private String duration;
+    private String age;
+    private String sinopsis;
+    private String director;
+    private List<String> language;
+    private List<String> avaliable;
+    private String urlmini;
+    private String urlminiLocal = "";
+    private String url;
+    private String urlLocal = "";
+    private List<String> idsCinemas;
+    private List<List<String>> hoursCinemas;
+    private byte[] datosImagen;
+    private byte[] datosImagenMini;
 
-    String urlmini;
-    String url;
-
-    String[] idsCinemas = new String[0];
-    String[][] hoursCinemas  = new String[0][0];
-
-    public Movie(String name, String gender, String duration, String age, String sinopsis, String director, String[] language, String[] avaliable, int id, String urlmini, String url, String[] idsCinemas, String[][] hoursCinemas) {
+    public Movie(int id, String src, String srcLocal, String status, String name, String gender, String duration, String age, String sinopsis, String director, List<String> language, List<String> avaliable, String urlmini, String urlminiLocal, String url, String urlLocal, List<String> idsCinemas, List<List<String>> hoursCinemas) {
+        this.id = id;
+        this.src = src;
+        this.srcLocal = srcLocal;
+        this.status = status;
         this.name = name;
         this.gender = gender;
         this.duration = duration;
@@ -28,11 +45,79 @@ public class Movie {
         this.director = director;
         this.language = language;
         this.avaliable = avaliable;
+        this.urlmini = urlmini;
+        this.urlminiLocal = urlminiLocal;
+        this.url = url;
+        this.urlLocal = urlLocal;
+        this.idsCinemas = idsCinemas;
+        this.hoursCinemas = hoursCinemas;
+    }
+    @Ignore
+    public Movie(int id, String src, String srcLocal, String status, String name, String gender, String duration, String age, String sinopsis, String director, List<String> language, List<String> avaliable, String urlmini, String url, List<String> idsCinemas, List<List<String>> hoursCinemas) {
         this.id = id;
+        this.src = src;
+        this.srcLocal = srcLocal;
+        this.status = status;
+        this.name = name;
+        this.gender = gender;
+        this.duration = duration;
+        this.age = age;
+        this.sinopsis = sinopsis;
+        this.director = director;
+        this.language = language;
+        this.avaliable = avaliable;
         this.urlmini = urlmini;
         this.url = url;
         this.idsCinemas = idsCinemas;
         this.hoursCinemas = hoursCinemas;
+    }
+
+    public byte[] getDatosImagenMini() {
+        return datosImagenMini;
+    }
+
+    public void setDatosImagenMini(byte[] datosImagenMini) {
+        this.datosImagenMini = datosImagenMini;
+    }
+
+    public byte[] getDatosImagen() {
+        return datosImagen;
+    }
+
+    public void setDatosImagen(byte[] datosImagen) {
+        this.datosImagen = datosImagen;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSrc() {
+        return src;
+    }
+
+    public void setSrc(String src) {
+        this.src = src;
+    }
+
+    public String getSrcLocal() {
+        return srcLocal;
+    }
+
+    public void setSrcLocal(String srcLocal) {
+        this.srcLocal = srcLocal;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getName() {
@@ -83,28 +168,20 @@ public class Movie {
         this.director = director;
     }
 
-    public String[] getLanguage() {
+    public List<String> getLanguage() {
         return language;
     }
 
-    public void setLanguage(String[] language) {
+    public void setLanguage(List<String> language) {
         this.language = language;
     }
 
-    public String[] getAvaliable() {
+    public List<String> getAvaliable() {
         return avaliable;
     }
 
-    public void setAvaliable(String[] avaliable) {
+    public void setAvaliable(List<String> avaliable) {
         this.avaliable = avaliable;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getUrlmini() {
@@ -115,6 +192,14 @@ public class Movie {
         this.urlmini = urlmini;
     }
 
+    public String getUrlminiLocal() {
+        return urlminiLocal;
+    }
+
+    public void setUrlminiLocal(String urlminiLocal) {
+        this.urlminiLocal = urlminiLocal;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -123,19 +208,27 @@ public class Movie {
         this.url = url;
     }
 
-    public String[] getIdsCinemas() {
+    public String getUrlLocal() {
+        return urlLocal;
+    }
+
+    public void setUrlLocal(String urlLocal) {
+        this.urlLocal = urlLocal;
+    }
+
+    public List<String> getIdsCinemas() {
         return idsCinemas;
     }
 
-    public void setIdsCinemas(String[] idsCinemas) {
+    public void setIdsCinemas(List<String> idsCinemas) {
         this.idsCinemas = idsCinemas;
     }
 
-    public String[][] getHoursCinemas() {
+    public List<List<String>> getHoursCinemas() {
         return hoursCinemas;
     }
 
-    public void setHoursCinemas(String[][] hoursCinemas) {
+    public void setHoursCinemas(List<List<String>> hoursCinemas) {
         this.hoursCinemas = hoursCinemas;
     }
 }

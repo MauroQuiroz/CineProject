@@ -22,13 +22,15 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@drawable/borde_right">
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_location3"
                 android:tint="@color/color_icons" />
             <TextView
+                android:id="@+id/txt_name_cine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ciudad"
@@ -52,6 +54,7 @@
                 android:src="@drawable/ic_cinema_sala"
                 android:tint="@color/color_icons"/>
             <TextView
+                android:id="@+id/txt_name_sala"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sala"

@@ -2,6 +2,7 @@ package com.example.cineplanet.ui.peliculas.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +22,12 @@ import java.util.List;
 
 public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
 
-    String[] items;
+    List<String> items;
     Context context;
     Movie movie;
     CinePelicula cinePelicula;
 
-    public HoraAdapter(String[] items, Movie movie,CinePelicula cinePelicula) {
+    public HoraAdapter(List<String> items, Movie movie,CinePelicula cinePelicula) {
         this.items = items;
         this.movie = movie;
         this.cinePelicula = cinePelicula;
@@ -42,13 +43,14 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        holder.txt.setText(items[position]);
+        holder.txt.setText(items.get(position));
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Butaca.class );
                 String sData = new Gson().toJson(movie);
-                intent.putExtra("movie",sData);
+                intent.putExtra("idM",String.valueOf(movie.getId()));
+
                 String sData2 = new Gson().toJson(cinePelicula);
                 intent.putExtra("cine",sData2);
 
@@ -58,7 +60,7 @@ public class HoraAdapter extends RecyclerView.Adapter<HoraAdapter.Viewholder> {
     }
     @Override
     public int getItemCount() {
-        return items.length;
+        return items.size();
     }
 
     public class  Viewholder extends RecyclerView.ViewHolder{

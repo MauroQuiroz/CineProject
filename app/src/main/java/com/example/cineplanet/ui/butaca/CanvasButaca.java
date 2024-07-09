@@ -1,6 +1,7 @@
 package com.example.cineplanet.ui.butaca;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -20,16 +21,24 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.cineplanet.login.LoginActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class CanvasButaca extends View {
     Paint paint;
+    public  static boolean btnComprar = false;
+    FirebaseAuth mAuth;
     List<Circle> circles = new ArrayList<>();
     int numW = 1;
+    public static ArrayList<String> asientosEle = new ArrayList<>();
     public CanvasButaca(Context context) {
         super(context);
         init();
@@ -288,7 +297,23 @@ public class CanvasButaca extends View {
                         Math.pow(event.getY() - circle.Y, 2)) <= circle.radius)&&circle.dispnible) {
 
                     circle.pintado = circle.pintado?false:true;
+                    btnComprar = true;
                     invalidate();
+
+                    if(!circle.pintado){
+                        Iterator<String> iterator = asientosEle.iterator();
+                        while (iterator.hasNext()) {
+                            String text = iterator.next();
+                            String textActual = circle.letra + circle.number;
+                            if (textActual.equals(text)) {
+                                iterator.remove();
+                            }
+                        }
+                    }
+                    else{
+                        asientosEle.add(""+circle.letra+circle.number);
+                    }
+
                     return true;
                 }
             }
@@ -377,4 +402,5 @@ public class CanvasButaca extends View {
             this.dispnible = dispnible;
         }
     }
+
 }
